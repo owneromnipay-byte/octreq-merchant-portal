@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import AppLayout from "@/components/layout/AppLayout";
 import RecentTransactions from "@/components/dashboard/RecentTransactions";
+import RevenueChart from "@/components/dashboard/RevenueChart";
+import StatCard from "@/components/ui/stat-card";
+
 import { getDashboard } from "./services/api";
 
 export default function Home() {
@@ -61,64 +65,46 @@ export default function Home() {
           </h1>
 
           <p className="mt-2 text-slate-500">
-            Welcome back to OmniPay.
+            Welcome back to OmniPay 👋
           </p>
 
         </div>
 
       </div>
+
+      {/* KPI Cards */}
 
       <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
 
-        <div className="rounded-xl bg-white p-6 shadow">
+        <StatCard
+          title="Wallet Balance"
+          value={`₦${Number(dashboard.wallet.balance).toLocaleString()}`}
+        />
 
-          <p className="text-sm text-slate-500">
-            Wallet Balance
-          </p>
+        <StatCard
+          title="Today's Revenue"
+          value={`₦${Number(dashboard.revenue.today).toLocaleString()}`}
+        />
 
-          <h2 className="mt-3 text-3xl font-bold">
-            ₦{Number(dashboard.wallet.balance).toLocaleString()}
-          </h2>
+        <StatCard
+          title="Total Transactions"
+          value={dashboard.transactions.total}
+        />
 
-        </div>
-
-        <div className="rounded-xl bg-white p-6 shadow">
-
-          <p className="text-sm text-slate-500">
-            Today's Revenue
-          </p>
-
-          <h2 className="mt-3 text-3xl font-bold">
-            ₦{Number(dashboard.revenue.today).toLocaleString()}
-          </h2>
-
-        </div>
-
-        <div className="rounded-xl bg-white p-6 shadow">
-
-          <p className="text-sm text-slate-500">
-            Total Transactions
-          </p>
-
-          <h2 className="mt-3 text-3xl font-bold">
-            {dashboard.transactions.total}
-          </h2>
-
-        </div>
-
-        <div className="rounded-xl bg-white p-6 shadow">
-
-          <p className="text-sm text-slate-500">
-            Total Revenue
-          </p>
-
-          <h2 className="mt-3 text-3xl font-bold">
-            ₦{Number(dashboard.revenue.total).toLocaleString()}
-          </h2>
-
-        </div>
+        <StatCard
+          title="Total Revenue"
+          value={`₦${Number(dashboard.revenue.total).toLocaleString()}`}
+        />
 
       </div>
+
+      {/* Revenue Chart */}
+
+      <RevenueChart
+        data={dashboard.revenue_chart}
+      />
+
+      {/* Recent Transactions */}
 
       <RecentTransactions
         transactions={dashboard.recent_transactions}
