@@ -1,10 +1,36 @@
 const API_BASE = "http://localhost:3000/api";
 
+interface TransactionFilters {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+  transactionType?: string;
+}
+
+/**
+ * Shared API Request Helper
+ */
+async function apiRequest(
+  endpoint: string,
+  options: RequestInit = {}
+) {
+  const response = await fetch(`${API_BASE}${endpoint}`, options);
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Something went wrong.");
+  }
+
+  return data;
+}
+
 /**
  * Login
  */
 export async function login(email: string, password: string) {
-  const response = await fetch(`${API_BASE}/auth/login`, {
+  return apiRequest("/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -14,32 +40,18 @@ export async function login(email: string, password: string) {
       password,
     }),
   });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message);
-  }
-
-  return data;
 }
 
 /**
  * Dashboard
  */
 export async function getDashboard(token: string) {
-  const response = await fetch(`${API_BASE}/dashboard`, {
+  const data = await apiRequest("/dashboard", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message);
-  }
 
   return data.data;
 }
@@ -47,15 +59,6 @@ export async function getDashboard(token: string) {
 /**
  * Transactions
  */
-
-interface TransactionFilters {
-  page?: number;
-  limit?: number;
-  search?: string;
-  status?: string;
-  transactionType?: string;
-}
-
 export async function getTransactions(
   token: string,
   filters: TransactionFilters = {}
@@ -77,8 +80,8 @@ export async function getTransactions(
     params.set("transaction_type", filters.transactionType);
   }
 
-  const response = await fetch(
-    `${API_BASE}/transactions?${params.toString()}`,
+  return apiRequest(
+    `/transactions?${params.toString()}`,
     {
       method: "GET",
       headers: {
@@ -86,32 +89,18 @@ export async function getTransactions(
       },
     }
   );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message);
-  }
-
-  return data;
 }
 
 /**
  * Wallet
  */
 export async function getWallet(token: string) {
-  const response = await fetch(`${API_BASE}/wallet`, {
+  const data = await apiRequest("/wallet", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message);
-  }
 
   return data.data;
 }

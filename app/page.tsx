@@ -7,10 +7,14 @@ import RecentTransactions from "@/components/dashboard/RecentTransactions";
 import RevenueChart from "@/components/dashboard/RevenueChart";
 import StatCard from "@/components/ui/stat-card";
 
+import type { Dashboard } from "@/types/dashboard";
+
+import { formatCurrency } from "@/utils/formatCurrency";
+
 import { getDashboard } from "./services/api";
 
 export default function Home() {
-  const [dashboard, setDashboard] = useState<any>(null);
+  const [dashboard, setDashboard] = useState<Dashboard | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -41,7 +45,7 @@ export default function Home() {
     loadDashboard();
   }, []);
 
-  if (loading) {
+  if (loading || !dashboard) {
     return (
       <AppLayout>
         <div className="p-8">
@@ -55,11 +59,8 @@ export default function Home() {
 
   return (
     <AppLayout>
-
       <div className="flex items-center justify-between">
-
         <div>
-
           <h1 className="text-4xl font-bold">
             Dashboard
           </h1>
@@ -67,9 +68,7 @@ export default function Home() {
           <p className="mt-2 text-slate-500">
             Welcome back to OmniPay 👋
           </p>
-
         </div>
-
       </div>
 
       {/* KPI Cards */}
@@ -78,12 +77,12 @@ export default function Home() {
 
         <StatCard
           title="Wallet Balance"
-          value={`₦${Number(dashboard.wallet.balance).toLocaleString()}`}
+          value={formatCurrency(dashboard.wallet.balance)}
         />
 
         <StatCard
           title="Today's Revenue"
-          value={`₦${Number(dashboard.revenue.today).toLocaleString()}`}
+          value={formatCurrency(dashboard.revenue.today)}
         />
 
         <StatCard
@@ -93,7 +92,7 @@ export default function Home() {
 
         <StatCard
           title="Total Revenue"
-          value={`₦${Number(dashboard.revenue.total).toLocaleString()}`}
+          value={formatCurrency(dashboard.revenue.total)}
         />
 
       </div>
@@ -101,7 +100,7 @@ export default function Home() {
       {/* Revenue Chart */}
 
       <RevenueChart
-        data={dashboard.revenue_chart}
+        data={dashboard.revenue_chart ?? []}
       />
 
       {/* Recent Transactions */}

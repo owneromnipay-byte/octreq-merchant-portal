@@ -3,19 +3,35 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
-import AppLayout from "../../components/layout/AppLayout";
-import TransactionFilters from "../../components/transactions/TransactionFilters";
-import TransactionPagination from "../../components/transactions/TransactionPagination";
+import AppLayout from "@/components/layout/AppLayout";
+import TransactionFilters from "@/components/transactions/TransactionFilters";
+import TransactionPagination from "@/components/transactions/TransactionPagination";
+import TransactionDetailsModal from "@/components/transactions/TransactionDetailsModal";
+
+import type { Transaction } from "@/types/transaction";
+
 import { getTransactions } from "../services/api";
 
 const TransactionTable = dynamic(
-  () => import("../../components/transactions/TransactionTable"),
+  () => import("@/components/transactions/TransactionTable"),
   { ssr: false }
 );
 
+interface Pagination {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
 export default function TransactionsPage() {
-  const [transactions, setTransactions] = useState<any[]>([]);
-  const [pagination, setPagination] = useState<any>(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [pagination, setPagination] = useState<Pagination | null>(null);
+
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transaction | null>(null);
 
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
@@ -78,7 +94,6 @@ export default function TransactionsPage() {
       </p>
 
       <div className="mt-8">
-
         <TransactionFilters
           search={search}
           status={status}
@@ -90,6 +105,7 @@ export default function TransactionsPage() {
 
         <TransactionTable
           transactions={transactions}
+          onRowClick={(transaction) => setSelectedTransaction(transaction as Transaction)}
         />
 
         {pagination && (
@@ -98,8 +114,13 @@ export default function TransactionsPage() {
             onPageChange={loadTransactions}
           />
         )}
-
       </div>
+
+      <TransactionDetailsModal
+        transaction={selectedTransaction}
+        open={!!selectedTransaction}
+        onClose={() => setSelectedTransaction(null)}
+      />
     </AppLayout>
   );
 }

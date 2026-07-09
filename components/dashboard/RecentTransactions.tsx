@@ -1,13 +1,9 @@
+import type { Transaction } from "@/types/transaction";
+
 import StatusBadge from "./StatusBadge";
 
-interface Transaction {
-  id: string;
-  payment_reference: string;
-  amount: number;
-  provider: string;
-  status: string;
-  created_at: string;
-}
+import { formatCurrency } from "@/utils/formatCurrency";
+import { formatDate } from "@/utils/formatDate";
 
 interface RecentTransactionsProps {
   transactions: Transaction[];
@@ -72,7 +68,7 @@ export default function RecentTransactions({
 
                 <tr
                   key={transaction.id}
-                  className="border-t hover:bg-slate-50 transition"
+                  className="border-t transition hover:bg-slate-50"
                 >
 
                   <td className="px-6 py-4 font-medium">
@@ -80,7 +76,7 @@ export default function RecentTransactions({
                   </td>
 
                   <td className="px-6 py-4">
-                    ₦{Number(transaction.amount).toLocaleString()}
+                    {formatCurrency(transaction.amount)}
                   </td>
 
                   <td className="px-6 py-4 capitalize">
@@ -92,7 +88,7 @@ export default function RecentTransactions({
                   </td>
 
                   <td className="px-6 py-4 text-slate-500">
-                    {new Date(transaction.created_at).toLocaleDateString()}
+                    {formatDate(transaction.created_at)}
                   </td>
 
                 </tr>

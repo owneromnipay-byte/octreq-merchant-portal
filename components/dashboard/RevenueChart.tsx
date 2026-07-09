@@ -1,5 +1,9 @@
 "use client";
 
+import type { RevenuePoint } from "@/types/dashboard";
+
+import { formatCurrency } from "@/utils/formatCurrency";
+
 import {
   ResponsiveContainer,
   LineChart,
@@ -9,11 +13,6 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
-
-interface RevenuePoint {
-  date: string;
-  amount: number;
-}
 
 interface RevenueChartProps {
   data: RevenuePoint[];
@@ -39,7 +38,7 @@ export default function RevenueChart({
 
             <XAxis
               dataKey="date"
-              tickFormatter={(date) =>
+              tickFormatter={(date: string) =>
                 new Date(date).toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
@@ -50,9 +49,17 @@ export default function RevenueChart({
             <YAxis />
 
             <Tooltip
-              formatter={(value: any) =>
-                value == null ? "" : `₦${Number(value).toLocaleString()}`
-              }
+              formatter={(
+                value: string | number | readonly (string | number)[] | undefined
+              ) => {
+                const numericValue = Array.isArray(value)
+                  ? value[0]
+                  : value;
+
+                return numericValue == null
+                  ? ""
+                  : formatCurrency(Number(numericValue));
+              }}
             />
 
             <Line
