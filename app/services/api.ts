@@ -104,3 +104,32 @@ export async function getWallet(token: string) {
 
   return data.data;
 }
+/**
+ * Ledger
+ */
+export async function getLedger(
+  token: string,
+  page = 1,
+  limit = 10
+) {
+  const params = new URLSearchParams();
+
+  params.set("page", String(page));
+  params.set("limit", String(limit));
+
+  const data = await apiRequest(
+    `/ledger?${params.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return {
+    ledger: data.ledger,
+    pagination: data.pagination,
+    summary: data.summary,
+  };
+}
