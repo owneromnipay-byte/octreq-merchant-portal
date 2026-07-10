@@ -199,3 +199,70 @@ export async function createInvoice(
 
   return data.invoice;
 }
+interface PayoutFilters {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+}
+
+/**
+ * Payouts
+ */
+export async function getPayouts(
+  token: string,
+  filters: PayoutFilters = {}
+) {
+  const params = new URLSearchParams();
+
+  params.set("page", String(filters.page ?? 1));
+  params.set("limit", String(filters.limit ?? 10));
+
+  if (filters.search) {
+    params.set("search", filters.search);
+  }
+
+  if (filters.status) {
+    params.set("status", filters.status);
+  }
+
+  const data = await apiRequest(
+    `/payouts?${params.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return {
+    payouts: data.payouts,
+    pagination: data.pagination,
+  };
+}
+/**
+ * Create Payout
+ */
+export async function createPayout(
+  token: string,
+  payload: {
+    amount: number;
+    currency: string;
+    bank_name: string;
+    bank_code: string;
+    account_number: string;
+    account_name: string;
+  }
+) {
+  const data = await apiRequest("/payouts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  return data.data;
+}
