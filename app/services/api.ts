@@ -133,3 +133,69 @@ export async function getLedger(
     summary: data.summary,
   };
 }
+interface InvoiceFilters {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+}
+
+/**
+ * Invoices
+ */
+export async function getInvoices(
+  token: string,
+  filters: InvoiceFilters = {}
+) {
+  const params = new URLSearchParams();
+
+  params.set("page", String(filters.page ?? 1));
+  params.set("limit", String(filters.limit ?? 10));
+
+  if (filters.search) {
+    params.set("search", filters.search);
+  }
+
+  if (filters.status) {
+    params.set("status", filters.status);
+  }
+
+  const data = await apiRequest(
+    `/invoices?${params.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return {
+    invoices: data.invoices,
+    pagination: data.pagination,
+  };
+}
+/**
+ * Create Invoice
+ */
+export async function createInvoice(
+  token: string,
+  payload: {
+    customer_name: string;
+    customer_email: string;
+    amount: number;
+    currency: string;
+    description: string;
+  }
+) {
+  const data = await apiRequest("/invoices", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  return data.invoice;
+}
