@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 
 import AppLayout from "@/components/layout/AppLayout";
-
+import TableSkeleton from "@/components/ui/TableSkeleton";
 import InvoiceTable from "@/components/invoice/InvoiceTable";
 import InvoiceFilters from "@/components/invoice/InvoiceFilters";
 import InvoiceDetailsModal from "@/components/invoice/invoiceDetailsModal";
 import CreateInvoiceModal from "@/components/invoice/CreateInvoiceModal";
-
+import EmptyState from "@/components/ui/EmptyState";
+import { Receipt } from "lucide-react";
 import TransactionPagination from "@/components/transactions/TransactionPagination";
 
 import type { Invoice } from "@/types/invoice";
@@ -65,18 +66,13 @@ export default function InvoicesPage() {
     }
   }
 
-  if (loading) {
-    return (
-      <AppLayout>
-        <div className="p-8">
-          <h2 className="text-2xl font-semibold">
-            Loading Invoices...
-          </h2>
-        </div>
-      </AppLayout>
-    );
-  }
-
+ if (loading) {
+  return (
+    <AppLayout>
+      <TableSkeleton />
+    </AppLayout>
+  );
+}
   return (
     <AppLayout>
 
@@ -112,10 +108,18 @@ export default function InvoicesPage() {
           onStatusChange={setStatus}
         />
 
-        <InvoiceTable
-          invoices={invoices}
-          onRowClick={(invoice) => setSelectedInvoice(invoice as Invoice)}
-        />
+        {invoices.length === 0 ? (
+  <EmptyState
+    icon={Receipt}
+    title="No invoices yet"
+    description="Create your first invoice to start receiving payments."
+  />
+) : (
+  <InvoiceTable
+    invoices={invoices}
+    onRowClick={(invoice: any) => setSelectedInvoice(invoice)}
+  />
+)}
 
         {pagination && (
           <TransactionPagination

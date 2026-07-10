@@ -6,7 +6,7 @@ import AppLayout from "@/components/layout/AppLayout";
 import RecentTransactions from "@/components/dashboard/RecentTransactions";
 import RevenueChart from "@/components/dashboard/RevenueChart";
 import StatCard from "@/components/ui/stat-card";
-
+import DashboardSkeleton from "@/components/dashboard/DashboardSkeleton";
 import type { Dashboard } from "@/types/dashboard";
 
 import { formatCurrency } from "@/utils/formatCurrency";
@@ -46,16 +46,12 @@ export default function Home() {
   }, []);
 
   if (loading || !dashboard) {
-    return (
-      <AppLayout>
-        <div className="p-8">
-          <h2 className="text-2xl font-semibold">
-            Loading Dashboard...
-          </h2>
-        </div>
-      </AppLayout>
-    );
-  }
+  return (
+    <AppLayout>
+      <DashboardSkeleton />
+    </AppLayout>
+  );
+}
 
   return (
     <AppLayout>

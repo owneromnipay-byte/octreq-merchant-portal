@@ -1,5 +1,5 @@
 "use client";
-
+import { toast } from "sonner";
 import { useState } from "react";
 
 import { createPayout } from "@/app/services/api";
@@ -43,7 +43,7 @@ export default function CreatePayoutModal({
         account_name: accountName,
       });
 
-      alert("Payout created successfully.");
+      toast.success("Payout created successfully.");
 
       onSuccess();
       onClose();
@@ -56,7 +56,7 @@ export default function CreatePayoutModal({
       setCurrency("NGN");
 
     } catch (error: any) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }

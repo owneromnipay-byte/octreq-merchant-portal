@@ -1,13 +1,14 @@
 "use client";
-
+import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-
+import EmptyState from "@/components/ui/EmptyState";
+import { ArrowLeftRight } from "lucide-react";
 import AppLayout from "@/components/layout/AppLayout";
 import TransactionFilters from "@/components/transactions/TransactionFilters";
 import TransactionPagination from "@/components/transactions/TransactionPagination";
 import TransactionDetailsModal from "@/components/transactions/TransactionDetailsModal";
-
+import TableSkeleton from "@/components/ui/TableSkeleton";
 import type { Transaction } from "@/types/transaction";
 
 import { getTransactions } from "../services/api";
@@ -65,7 +66,7 @@ export default function TransactionsPage() {
     } catch (err) {
       console.error(err);
 
-      alert("Unable to load transactions.");
+      toast.error("Unable to load transactions.");
 
       window.location.href = "/login";
     } finally {
@@ -73,15 +74,13 @@ export default function TransactionsPage() {
     }
   }
 
-  if (loading) {
-    return (
-      <AppLayout>
-        <h2 className="text-2xl font-semibold">
-          Loading Transactions...
-        </h2>
-      </AppLayout>
-    );
-  }
+ if (loading) {
+  return (
+    <AppLayout>
+      <TableSkeleton />
+    </AppLayout>
+  );
+}
 
   return (
     <AppLayout>
@@ -103,10 +102,18 @@ export default function TransactionsPage() {
           onTransactionTypeChange={setTransactionType}
         />
 
-        <TransactionTable
-          transactions={transactions}
-          onRowClick={(transaction) => setSelectedTransaction(transaction as Transaction)}
-        />
+      {transactions.length === 0 ? (
+  <EmptyState
+    icon={ArrowLeftRight}
+    title="No transactions yet"
+    description="Your payment transactions will appear here."
+  />
+) : (
+  <TransactionTable
+    transactions={transactions}
+    onRowClick={setSelectedTransaction}
+  />
+)}
 
         {pagination && (
           <TransactionPagination

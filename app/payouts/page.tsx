@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 
 import AppLayout from "@/components/layout/AppLayout";
-
+import TableSkeleton from "@/components/ui/TableSkeleton";
 import PayoutTable from "@/components/payout/PayoutTable";
 import PayoutFilters from "@/components/payout/PayoutFilters";
 import PayoutDetailsModal from "@/components/payout/PayoutDetailsModal";
 import CreatePayoutModal from "@/components/payout/CreatePayoutModal";
-
+import EmptyState from "@/components/ui/EmptyState";
+import { Landmark } from "lucide-react";
 import TransactionPagination from "@/components/transactions/TransactionPagination";
 
 import type { Payout } from "@/types/payout";
@@ -65,16 +66,12 @@ export default function PayoutsPage() {
   }
 
   if (loading) {
-    return (
-      <AppLayout>
-        <div className="p-8">
-          <h2 className="text-2xl font-semibold">
-            Loading Payouts...
-          </h2>
-        </div>
-      </AppLayout>
-    );
-  }
+  return (
+    <AppLayout>
+      <TableSkeleton />
+    </AppLayout>
+  );
+}
 
   return (
     <AppLayout>
@@ -109,10 +106,18 @@ export default function PayoutsPage() {
           onStatusChange={setStatus}
         />
 
-        <PayoutTable
-          payouts={payouts}
-          onRowClick={setSelectedPayout}
-        />
+        {payouts.length === 0 ? (
+  <EmptyState
+    icon={Landmark}
+    title="No payouts yet"
+    description="Your payout history will appear here once you send your first payout."
+  />
+) : (
+  <PayoutTable
+    payouts={payouts}
+    onRowClick={setSelectedPayout}
+  />
+)}
 
         {pagination && (
           <TransactionPagination

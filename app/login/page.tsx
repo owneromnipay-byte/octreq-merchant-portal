@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-
+import { toast } from "sonner";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +26,7 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        alert(data.message);
+        toast.error(data.message);
         return;
       }
 
@@ -35,7 +35,7 @@ export default function LoginPage() {
 
       window.location.href = "/";
     } catch (err) {
-      alert("Unable to connect to OmniPay backend.");
+      toast.error("Unable to connect to OmniPay backend.");
     } finally {
       setLoading(false);
     }

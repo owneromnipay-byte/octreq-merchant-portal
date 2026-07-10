@@ -1,5 +1,5 @@
 "use client";
-
+import { toast } from "sonner";
 import { useState } from "react";
 
 import { createInvoice } from "@/app/services/api";
@@ -43,7 +43,7 @@ export default function CreateInvoiceModal({
         description,
       });
 
-      alert("Invoice created successfully.");
+      toast.success("Invoice created successfully.");
 
       onSuccess();
       onClose();
@@ -55,7 +55,7 @@ export default function CreateInvoiceModal({
       setDescription("");
 
     } catch (error: any) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }

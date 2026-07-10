@@ -3,22 +3,24 @@
 import { useEffect, useMemo, useState } from "react";
 
 import AppLayout from "@/components/layout/AppLayout";
-
+import TableSkeleton from "@/components/ui/TableSkeleton";
 import WalletCard from "@/components/wallet/WalletCard";
 import WalletStats from "@/components/wallet/WalletStats";
 import LedgerFilters from "@/components/wallet/LedgerFilters";
 import LedgerTable from "@/components/wallet/LedgerTable";
 import LedgerDetailsModal from "@/components/wallet/LedgerDetailsModal";
+import EmptyState from "@/components/ui/EmptyState";
+import { Wallet as WalletIcon } from "lucide-react";
 
 import TransactionPagination from "@/components/transactions/TransactionPagination";
 
-import type { Wallet } from "@/types/wallet";
+import type { Wallet as WalletType } from "@/types/wallet";
 import type { LedgerEntry } from "@/types/ledger";
 
 import { getWallet, getLedger } from "../services/api";
 
 export default function WalletPage() {
-  const [wallet, setWallet] = useState<Wallet | null>(null);
+  const [wallet, setWallet] = useState<WalletType | null>(null);
   const [ledger, setLedger] = useState<LedgerEntry[]>([]);
   const [pagination, setPagination] = useState<any>(null);
 
@@ -86,15 +88,11 @@ export default function WalletPage() {
   if (loading || !wallet) {
     return (
       <AppLayout>
-        <div className="p-8">
-          <h2 className="text-2xl font-semibold">
-            Loading Wallet...
-          </h2>
-        </div>
+        <TableSkeleton />
       </AppLayout>
     );
   }
-
+        
   return (
     <AppLayout>
 
@@ -121,10 +119,17 @@ export default function WalletPage() {
           onTypeChange={setType}
         />
 
-        <LedgerTable
-          ledger={filteredLedger}
-          onRowClick={setSelectedEntry}
-        />
+              {filteredLedger.length === 0 ? (
+                <EmptyState
+                  icon={WalletIcon}
+                  title="No ledger entries"
+                  description="Your wallet activity will appear here."
+                />
+              ) : (
+  <LedgerTable
+    ledger={filteredLedger}
+  />
+              )}
 
         {pagination && (
           <TransactionPagination
