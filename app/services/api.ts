@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:3000/api";
+const API_BASE = "https://api.octoreq.com/api";
 
 interface TransactionFilters {
   page?: number;

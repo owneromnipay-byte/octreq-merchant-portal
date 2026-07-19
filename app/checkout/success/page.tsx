@@ -91,7 +91,7 @@ export default function CheckoutSuccessPage() {
         </h1>
 
         <p className="mt-2 text-green-100">
-          Securely powered by OmniPay
+          Securely powered by OCTOREQ
         </p>
 
       </div>

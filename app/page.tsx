@@ -62,7 +62,7 @@ export default function Home() {
           </h1>
 
           <p className="mt-2 text-slate-500">
-            Welcome back to OmniPay 👋
+            Welcome back to OCTOREQ👋
           </p>
         </div>
       </div>

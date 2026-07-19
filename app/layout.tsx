@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OmniPay Portal",
-  description: "Merchant dashboard for OmniPay",
+  title: "OCTOREQ Portal",
+  description: "Merchant dashboard for OCTOREQ",
 };
 
 export default function RootLayout({

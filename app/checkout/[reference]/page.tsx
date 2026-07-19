@@ -161,7 +161,7 @@ if (expired) {
       <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md">
 
         <h1 className="text-2xl font-bold text-center">
-          OmniPay
+          OCTOREQ
         </h1>
 
         <p className="text-center text-gray-500 mt-1">

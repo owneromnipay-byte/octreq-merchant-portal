@@ -60,11 +60,11 @@ export default function Sidebar() {
       <div className="border-b border-slate-800 p-6">
 
         <h1 className="text-3xl font-bold text-green-400">
-          OmniPay
+          OCTOREQ
         </h1>
 
         <p className="mt-1 text-sm text-slate-400">
-          Merchant Portal
+          Merchant Dashboard
         </p>
 
       </div>
@@ -101,7 +101,7 @@ export default function Sidebar() {
       <div className="border-t border-slate-800 p-5">
 
         <p className="text-xs text-slate-500">
-          OmniPay Merchant v1.0
+          OCTOREQ Merchant v1.0
         </p>
 
       </div>
