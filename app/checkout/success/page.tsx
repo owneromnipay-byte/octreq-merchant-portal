@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { getPaymentReceipt } from "@/app/services/checkout";
@@ -21,7 +21,7 @@ function formatDate(date: string) {
     timeStyle: "short",
   });
 }
-export default function CheckoutSuccessPage() {
+function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
 
   const reference = searchParams.get("reference");
@@ -252,4 +252,11 @@ export default function CheckoutSuccessPage() {
   </main>
 );
 
+}
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CheckoutSuccessContent />
+    </Suspense>
+  );
 }
