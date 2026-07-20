@@ -19,16 +19,16 @@ export default function Login() {
 
       if (response.success) {
         localStorage.setItem(
-          "token",
-          response.data.token
-        );
+    "token",
+    response.token
+);
 
-        localStorage.setItem(
-          "merchant",
-          JSON.stringify(
-            response.data.merchant
-          )
-        );
+localStorage.setItem(
+    "merchant",
+    JSON.stringify(
+        response.merchant
+    )
+);
 
         window.location.href = "/";
       } else {
