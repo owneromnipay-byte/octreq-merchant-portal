@@ -16,13 +16,16 @@ import { getDashboard } from "./services/api";
 export default function Home() {
   const [dashboard, setDashboard] = useState<Dashboard | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const merchant = JSON.parse(
-    localStorage.getItem("merchant") || "{}"
-  );
+  const [merchant, setMerchant] = useState<any>({});
 
   useEffect(() => {
     async function loadDashboard() {
+      const merchantData = localStorage.getItem("merchant");
+
+      if (merchantData) {
+        setMerchant(JSON.parse(merchantData));
+      }
+
       try {
         const token = localStorage.getItem("token");
 
@@ -62,9 +65,7 @@ export default function Home() {
       {/* Header */}
 
       <div>
-        <h1 className="text-4xl font-bold">
-          Dashboard
-        </h1>
+        <h1 className="text-4xl font-bold">Dashboard</h1>
 
         <div className="mt-3">
           <p className="font-medium text-white">
@@ -80,7 +81,6 @@ export default function Home() {
       {/* KPI Cards */}
 
       <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-
         <StatCard
           title="Wallet Balance"
           value={formatCurrency(dashboard.wallet.balance)}
@@ -100,7 +100,6 @@ export default function Home() {
           title="Total Revenue"
           value={formatCurrency(dashboard.revenue.total)}
         />
-
       </div>
 
       {/* Revenue Chart */}
@@ -114,7 +113,6 @@ export default function Home() {
       <RecentTransactions
         transactions={dashboard.recent_transactions}
       />
-
     </AppLayout>
   );
 }
