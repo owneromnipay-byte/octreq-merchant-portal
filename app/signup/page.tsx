@@ -13,7 +13,7 @@ export default function Signup() {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:3000/api/auth/signup",
+        "https:api.octoreq.com/api/auth/signup",
         {
           method: "POST",
           headers: {
