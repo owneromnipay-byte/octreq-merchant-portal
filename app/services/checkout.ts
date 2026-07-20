@@ -1,4 +1,5 @@
-const API_BASE = "https://api.octoreq.com";
+const API_BASE =
+process.env.NEXT_PUBLIC_API_URL + "/api";
 
 async function apiRequest(
   endpoint: string,
