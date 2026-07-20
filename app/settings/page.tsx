@@ -1,11 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import AppLayout from "@/components/layout/AppLayout";
 
 export default function SettingsPage() {
-  const merchant = JSON.parse(
-    localStorage.getItem("merchant") || "{}"
-  );
+  const [merchant, setMerchant] = useState<any>({});
+
+  useEffect(() => {
+    const merchantData = localStorage.getItem("merchant");
+
+    if (merchantData) {
+      setMerchant(JSON.parse(merchantData));
+    }
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -16,7 +23,6 @@ export default function SettingsPage() {
 
   return (
     <AppLayout>
-
       <h1 className="text-4xl font-bold">
         Settings
       </h1>
@@ -28,13 +34,11 @@ export default function SettingsPage() {
       {/* Company Information */}
 
       <div className="mt-10 rounded-2xl border border-slate-800 bg-slate-900 p-6">
-
         <h2 className="text-xl font-semibold text-white">
           Company Information
         </h2>
 
         <div className="mt-6 space-y-4">
-
           <div>
             <p className="text-sm text-slate-500">
               Company Name
@@ -54,21 +58,17 @@ export default function SettingsPage() {
               {merchant.email || "N/A"}
             </p>
           </div>
-
         </div>
-
       </div>
 
       {/* Security */}
 
       <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-6">
-
         <h2 className="text-xl font-semibold text-white">
           Security
         </h2>
 
         <div className="mt-6 space-y-4">
-
           <button
             className="
               rounded-xl
@@ -80,21 +80,17 @@ export default function SettingsPage() {
           >
             Change Password
           </button>
-
         </div>
-
       </div>
 
       {/* Account */}
 
       <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-6">
-
         <h2 className="text-xl font-semibold text-white">
           Account
         </h2>
 
         <div className="mt-6">
-
           <button
             onClick={handleLogout}
             className="
@@ -108,11 +104,9 @@ export default function SettingsPage() {
           >
             Logout
           </button>
-
         </div>
-
       </div>
-
     </AppLayout>
   );
 }
+
