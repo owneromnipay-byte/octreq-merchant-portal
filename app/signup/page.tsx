@@ -13,7 +13,7 @@ export default function Signup() {
       setLoading(true);
 
       const response = await fetch(
-        "https:api.octoreq.com/api/auth/signup",
+        "https://api.octoreq.com/api/auth/signup",
         {
           method: "POST",
           headers: {
@@ -28,17 +28,21 @@ export default function Signup() {
       );
 
       const data = await response.json();
-if (data.success) {
-      alert(
-    "Account created successfully. Please sign in."
-);
 
-window.location.href = "/login";
+      if (data.success) {
+        alert(
+          "Account created successfully. Please sign in."
+        );
+
+        window.location.href = "/login";
       } else {
-        alert(data.message || "Signup failed.");
+        alert(
+          data.message || "Signup failed."
+        );
       }
     } catch (error) {
       console.error(error);
+
       alert("Something went wrong.");
     } finally {
       setLoading(false);
@@ -49,7 +53,6 @@ window.location.href = "/login";
     <main className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-slate-900 flex items-center justify-center px-4">
       <div className="w-[450px] rounded-3xl border border-slate-700 bg-white/5 backdrop-blur-xl p-10 transition-all duration-500 hover:scale-[1.02]">
 
-        {/* Logo */}
         <div className="mb-6 flex justify-center">
           <img
             src="/octoreq-nlogo.jpg"
@@ -58,7 +61,6 @@ window.location.href = "/login";
           />
         </div>
 
-        {/* Header */}
         <div className="mt-10">
           <h2 className="text-4xl font-bold text-white">
             Build with OCTOREQ
@@ -73,14 +75,14 @@ window.location.href = "/login";
           </p>
         </div>
 
-        {/* Form */}
         <div className="mt-8 space-y-4">
-
           <input
             type="text"
             placeholder="Company Name"
             value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
+            onChange={(e) =>
+              setCompanyName(e.target.value)
+            }
             className="
               w-full
               p-4
@@ -96,7 +98,9 @@ window.location.href = "/login";
             type="email"
             placeholder="Email Address"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
             className="
               w-full
               p-4
@@ -112,7 +116,9 @@ window.location.href = "/login";
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
             className="
               w-full
               p-4
@@ -125,9 +131,9 @@ window.location.href = "/login";
           />
         </div>
 
-        {/* Button */}
         <button
           onClick={handleSignup}
+          disabled={loading}
           className="
             w-full
             mt-6
@@ -139,12 +145,14 @@ window.location.href = "/login";
             hover:scale-[1.02]
             transition-all
             duration-300
+            disabled:opacity-50
           "
         >
-          {loading ? "Creating..." : "Create Account"}
+          {loading
+            ? "Creating..."
+            : "Create Account"}
         </button>
 
-        {/* Links */}
         <p className="text-center text-gray-400 mt-6">
           Already have an account?
           <a
@@ -155,16 +163,12 @@ window.location.href = "/login";
           </a>
         </p>
 
-        {/* Footer */}
         <div className="mt-10 border-t border-slate-700 pt-6">
-
           <div className="grid grid-cols-3 gap-4 text-center mb-6">
-
             <div>
               <h3 className="text-white font-bold">
                 99.99%
               </h3>
-
               <p className="text-gray-500 text-xs">
                 Uptime
               </p>
@@ -174,7 +178,6 @@ window.location.href = "/login";
               <h3 className="text-white font-bold">
                 24/7
               </h3>
-
               <p className="text-gray-500 text-xs">
                 Monitoring
               </p>
@@ -184,20 +187,16 @@ window.location.href = "/login";
               <h3 className="text-white font-bold">
                 1 API
               </h3>
-
               <p className="text-gray-500 text-xs">
                 Unified
               </p>
             </div>
-
           </div>
 
           <p className="text-center text-sm text-gray-500">
             © 2026 OCTOREQ Technologies Limited
           </p>
-
         </div>
-
       </div>
     </main>
   );

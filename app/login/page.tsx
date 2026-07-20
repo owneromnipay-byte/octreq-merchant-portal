@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { login } from "@/app/services/api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -11,37 +12,38 @@ export default function Login() {
     try {
       setLoading(true);
 
-      const response = await fetch(
-        "https//api.octoreq.com/api/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        }
+      const response = await login(
+        email,
+        password
       );
 
-      const data = await response.json();
-
-      if (data.success) {
-        localStorage.setItem("token", data.token);
+      if (response.success) {
+        localStorage.setItem(
+          "token",
+          response.data.token
+        );
 
         localStorage.setItem(
           "merchant",
-          JSON.stringify(data.merchant)
+          JSON.stringify(
+            response.data.merchant
+          )
         );
 
         window.location.href = "/";
       } else {
-        alert(data.message);
+        alert(
+          response.message ||
+            "Login failed."
+        );
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("Login failed.");
+
+      alert(
+        error.message ||
+          "Login failed."
+      );
     } finally {
       setLoading(false);
     }
@@ -132,7 +134,9 @@ export default function Login() {
               disabled:opacity-50
             "
           >
-            {loading ? "Signing In..." : "Sign In"}
+            {loading
+              ? "Signing In..."
+              : "Sign In"}
           </button>
         </div>
 
