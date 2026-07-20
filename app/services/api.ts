@@ -306,7 +306,7 @@ export async function revokeApiKey(
   token: string,
   id: string
 ) {
-  const data = await apiRequest(
+  return await apiRequest(
     `/api-keys/${id}/revoke`,
     {
       method: "PATCH",
@@ -315,6 +315,4 @@ export async function revokeApiKey(
       },
     }
   );
-
-  return data.data;
 }
