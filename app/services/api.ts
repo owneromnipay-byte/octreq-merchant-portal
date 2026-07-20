@@ -1,5 +1,4 @@
-const API_BASE =
-process.env.NEXT_PUBLIC_API_URL + "/api";
+const API_BASE = "https://api.octoreq.com/api";
 
 interface TransactionFilters {
   page?: number;
