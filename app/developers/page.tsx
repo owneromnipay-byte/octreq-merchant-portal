@@ -63,26 +63,37 @@ setKeys(data?.keys ?? []);
 }
 
   async function handleRevokeKey(id: string) {
-    try {
-      const token = localStorage.getItem("token");
+  try {
+    const token = localStorage.getItem("token");
 
-      if (!token) return;
+    if (!token) return;
 
-      const confirmed = window.confirm(
-  "Are you sure you want to revoke this API Key?"
-);
+    const confirmed = window.confirm(
+      "Are you sure you want to revoke this API Key?"
+    );
 
-if (!confirmed) {
-  return;
-}
-
-await revokeApiKey(token, id);
-
-      await loadKeys();
-    } catch (error) {
-      console.error(error);
+    if (!confirmed) {
+      return;
     }
+
+    console.log("Revoking Key:", id);
+
+    const response = await revokeApiKey(
+      token,
+      id
+    );
+
+    console.log(
+      "REVOKE RESPONSE:",
+      response
+    );
+
+    await loadKeys();
+
+  } catch (error) {
+    console.error(error);
   }
+}
 
   if (loading) {
     return (
