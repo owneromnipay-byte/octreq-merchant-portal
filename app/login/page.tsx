@@ -1,4 +1,52 @@
+"use client";
+
+import { useState } from "react";
+
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        "http://localhost:3000/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        localStorage.setItem("token", data.token);
+
+        localStorage.setItem(
+          "merchant",
+          JSON.stringify(data.merchant)
+        );
+
+        window.location.href = "/";
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Login failed.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-slate-900 flex items-center justify-center p-6">
       <div className="w-[500px] rounded-3xl border border-slate-700 bg-white/5 backdrop-blur-xl p-10">
@@ -33,6 +81,10 @@ export default function Login() {
           <input
             type="email"
             placeholder="Email Address"
+            value={email}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
             className="
               w-full
               rounded-2xl
@@ -48,6 +100,10 @@ export default function Login() {
           <input
             type="password"
             placeholder="Password"
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
             className="
               w-full
               rounded-2xl
@@ -61,6 +117,8 @@ export default function Login() {
           />
 
           <button
+            onClick={handleLogin}
+            disabled={loading}
             className="
               w-full
               bg-[#24F76D]
@@ -71,9 +129,10 @@ export default function Login() {
               hover:scale-[1.02]
               transition-all
               duration-300
+              disabled:opacity-50
             "
           >
-            Sign In
+            {loading ? "Signing In..." : "Sign In"}
           </button>
         </div>
 

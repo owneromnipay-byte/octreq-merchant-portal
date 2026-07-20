@@ -15,7 +15,7 @@ export default function WalletStats({
     <div className="mt-8 grid gap-6 md:grid-cols-3">
 
       <StatCard
-        title="Current Balance"
+        title="Available Balance"
         value={`₦${Number(wallet.balance).toLocaleString()}`}
       />
 
@@ -25,7 +25,7 @@ export default function WalletStats({
       />
 
       <StatCard
-        title="Wallet Status"
+        title="Status"
         value={wallet.status}
       />
 

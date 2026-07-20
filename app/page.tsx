@@ -17,6 +17,10 @@ export default function Home() {
   const [dashboard, setDashboard] = useState<Dashboard | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const merchant = JSON.parse(
+    localStorage.getItem("merchant") || "{}"
+  );
+
   useEffect(() => {
     async function loadDashboard() {
       try {
@@ -46,23 +50,29 @@ export default function Home() {
   }, []);
 
   if (loading || !dashboard) {
-  return (
-    <AppLayout>
-      <DashboardSkeleton />
-    </AppLayout>
-  );
-}
+    return (
+      <AppLayout>
+        <DashboardSkeleton />
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-4xl font-bold">
-            Dashboard
-          </h1>
+      {/* Header */}
 
-          <p className="mt-2 text-slate-500">
-            Welcome back to OCTOREQ👋
+      <div>
+        <h1 className="text-4xl font-bold">
+          Dashboard
+        </h1>
+
+        <div className="mt-3">
+          <p className="font-medium text-white">
+            {merchant.company_name || "Merchant"}
+          </p>
+
+          <p className="text-sm text-slate-500">
+            {merchant.email || ""}
           </p>
         </div>
       </div>

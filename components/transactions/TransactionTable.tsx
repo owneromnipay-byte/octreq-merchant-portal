@@ -64,7 +64,7 @@ export default function TransactionTable({
                 <tr
                   key={transaction.id}
                   onClick={() => onRowClick?.(transaction)}
-                  className="cursor-pointer border-b transition-colors hover:bg-slate-50"
+                  className="cursor-pointer border-b border-slate-800 transition-colors hover:bg-slate-400"
                 >
                   <td className="py-4">
                     {transaction.payment_reference}

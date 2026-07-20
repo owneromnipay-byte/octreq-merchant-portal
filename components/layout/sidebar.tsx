@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import {
   LayoutDashboard,
@@ -54,8 +55,27 @@ const menuItems = [
 export default function Sidebar() {
   const pathname = usePathname();
 
+  const [merchant, setMerchant] = useState<any>({});
+
+useEffect(() => {
+  const storedMerchant = JSON.parse(
+    localStorage.getItem("merchant") || "{}"
+  );
+
+  setMerchant(storedMerchant);
+}, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("merchant");
+
+    window.location.href = "/login";
+  };
+
   return (
     <aside className="flex min-h-screen w-64 flex-col border-r border-slate-800 bg-slate-950 text-white">
+
+      {/* Header */}
 
       <div className="border-b border-slate-800 p-6">
 
@@ -63,11 +83,19 @@ export default function Sidebar() {
           OCTOREQ
         </h1>
 
-        <p className="mt-1 text-sm text-slate-400">
-          Merchant Dashboard
+        <p className="mt-4 font-semibold text-white">
+          {merchant.company_name || "Merchant"}
         </p>
 
+        <p className="text-xs text-slate-400">
+          {merchant.email || ""}
+        </p>
+<p className="mt-2 text-xs font-medium text-green-400">
+  Verified Merchant
+</p>
       </div>
+
+      {/* Navigation */}
 
       <nav className="flex-1 space-y-2 p-4">
 
@@ -98,11 +126,24 @@ export default function Sidebar() {
 
       </nav>
 
+      {/* Footer */}
+
       <div className="border-t border-slate-800 p-5">
 
-        <p className="text-xs text-slate-500">
-          OCTOREQ Merchant v1.0
-        </p>
+        <button
+          onClick={handleLogout}
+          className="
+            w-full
+            rounded-xl
+            bg-red-500
+            py-3
+            text-white
+            hover:bg-red-600
+            transition
+          "
+        >
+          Logout
+        </button>
 
       </div>
 

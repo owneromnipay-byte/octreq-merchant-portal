@@ -266,3 +266,55 @@ export async function createPayout(
 
   return data.data;
 }
+/**
+ * API Keys
+ */
+export async function getApiKeys(token: string) {
+  return await apiRequest("/api-keys", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+/**
+ * Create API Key
+ */
+export async function createApiKey(
+  token: string,
+  name: string
+) {
+  const data = await apiRequest("/api-keys", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      name,
+    }),
+  });
+
+  return data.data;
+}
+
+/**
+ * Revoke API Key
+ */
+export async function revokeApiKey(
+  token: string,
+  id: string
+) {
+  const data = await apiRequest(
+    `/api-keys/${id}/revoke`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return data.data;
+}
