@@ -15,8 +15,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OCTOREQ Portal",
-  description: "Merchant dashboard for OCTOREQ",
+  title: "OCTOREQ Merchant Portal",
+  description:
+    "Secure access to your OCTOREQ merchant dashboard.",
+
+  openGraph: {
+    title: "OCTOREQ Merchant Portal",
+    description:
+      "Secure access to your OCTOREQ merchant dashboard.",
+    url: "https://portal.octoreq.com",
+    siteName: "OCTOREQ",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
