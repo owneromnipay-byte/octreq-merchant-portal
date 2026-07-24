@@ -161,6 +161,34 @@ export default function Signup() {
               text-white
             "
           />
+          {
+    referralCode && (
+
+        <div
+            className="
+            p-4
+            rounded-xl
+            bg-[#24F76D]/10
+            border
+            border-[#24F76D]/30
+            "
+        >
+
+            <p
+                className="
+                text-[#24F76D]
+                font-semibold
+                "
+            >
+                Referred by:
+                {" "}
+                {referralCode}
+            </p>
+
+        </div>
+
+    )
+}
         </div>
 
         <button
