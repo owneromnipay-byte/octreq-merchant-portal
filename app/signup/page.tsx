@@ -1,12 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import {
+    useState
+} from "react";
+
+import {
+    useSearchParams
+} from "next/navigation";
 
 export default function Signup() {
   const [companyName, setCompanyName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const searchParams =
+    useSearchParams();
+
+const referralCode =
+    searchParams.get("ref");
 
   const handleSignup = async () => {
     try {
@@ -20,10 +31,14 @@ export default function Signup() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            company_name: companyName,
-            email,
-            password,
-          }),
+    company_name: companyName,
+    email,
+    password,
+
+    referral_code:
+        referralCode
+}),
+          
         }
       );
 
