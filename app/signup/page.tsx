@@ -1,23 +1,40 @@
 "use client";
 
-import {
-    useState
-} from "react";
-
-import {
-    useSearchParams
-} from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function Signup() {
-  const [companyName, setCompanyName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const searchParams =
-    useSearchParams();
 
-const referralCode =
-    searchParams.get("ref");
+  const [companyName, setCompanyName] =
+    useState("");
+
+  const [email, setEmail] =
+    useState("");
+
+  const [password, setPassword] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(false);
+
+  const [
+    referralCode,
+    setReferralCode
+  ] = useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    setReferralCode(
+      params.get("ref")
+    );
+
+  }, []);
 
   const handleSignup = async () => {
     try {
